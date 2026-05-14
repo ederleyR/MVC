@@ -65,7 +65,7 @@ class User {
     }
     public function getUserByEmail($email) {
         $conexion = new Conexion();
-        $db = $conexion->conectar(); // Obtenemos la conexión real
+        $db = $conexion->conectar(); 
 
         $sql = "SELECT * FROM users WHERE email = ?";
         $stmt = $db->prepare($sql);
@@ -77,10 +77,9 @@ class User {
         $stmt->bind_param("s", $email);
         $stmt->execute();
         
-        // Obtenemos el resultado de la consulta
+        
         $result = $stmt->get_result();
         
-        // Retornamos los datos como un array asociativo
         $usuario = $result->fetch_assoc();
 
         $conexion->desconectar();
