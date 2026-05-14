@@ -52,11 +52,10 @@
         }
        public function registerUser(){
             $datos = $_POST;
-            
-            // Limpiamos mensajes anteriores
+
             unset($_SESSION['old'], $_SESSION['success'], $_SESSION['errores']);
             
-            // 1. Validar campos vacíos o formato
+            
             $errores = $this->validateData($datos);
             if (count($errores) > 0){
                 $_SESSION['errores'] = $errores;
@@ -67,7 +66,7 @@
 
             $user = new User();
             
-            // 2. Validar si el email ya existe en la DB
+           
             $existe = $user->validateEmail($datos);
             if($existe > 0){
                 $_SESSION['errores'] = ['email' => 'El correo electrónico ya está en uso.'];
@@ -76,16 +75,15 @@
                 exit;
             }
 
-            // 3. Encriptar contraseña
+           
             $passwordHash = password_hash($datos['password'], PASSWORD_DEFAULT);
             $datos['password'] = $passwordHash;
 
-            // 4. Intentar registro
+           
             $resultado = $user->registerUser($datos);
             
             if($resultado > 0){
                 $_SESSION['success'] = '¡Cuenta creada con éxito! Ya puedes iniciar sesión.';
-                // Tip: Si ya se registró, mándalo al LOGIN, no al formulario de registro otra vez
                 header('location: ' . SITE_URL . 'index.php?action=getFormLoginUser');
                 exit;
             } else {
@@ -97,7 +95,7 @@
         }
         public function iniciarSesion($datos) {
             $user = new User();
-            // 1. Cambia tu modelo para que devuelva el objeto/array del usuario, no solo un número
+
             $usuario = $user->getUserByEmail($datos['email']); 
 
             if (!$usuario || !password_verify($datos['password'], $usuario['password'])) {
@@ -107,12 +105,10 @@
                 if (session_status() === PHP_SESSION_NONE) {
                     session_start();
                 }
-                
-                // --- AQUÍ ESTÁ LA CLAVE ---
-                // Guardamos el ID que la base de datos necesita para las reservas
+        
                 $_SESSION['user_id'] = $usuario['ID']; 
                 $_SESSION['user_email'] = $usuario['email'];
-                $_SESSION['user_name'] = $usuario['name']; // Opcional, para saludar en el dashboard
+                $_SESSION['user_name'] = $usuario['name']; 
                 $_SESSION['logged_in'] = true;
                 
                 header('location: ' . SITE_URL . 'index.php?action=getFormInicio');
@@ -143,7 +139,7 @@
             $documentos = new User();
             $documentForm = $documentos->DocumentTypes(); 
 
-            // Cargamos la vista de la reserva
+           
             require_once 'views/auth/register.php';
         }
         
