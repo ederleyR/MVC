@@ -12,8 +12,8 @@ function enviarCorreoReserva(array $reserva, array $usuario): bool {
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'programadoreder0@gmail.com';
-        $mail->Password   = 'yjiv bihb xylo ydqb';
+        $mail->Username   = $_ENV[$MAIL_USER];
+        $mail->Password   = $_ENV[$MAIL_PASS];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
         $mail->CharSet    = 'UTF-8';
