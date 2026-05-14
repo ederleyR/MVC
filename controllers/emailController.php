@@ -14,7 +14,6 @@ class EmailController {
         $userModel = new User();
         $usuario   = $userModel->getUserById($user_id);
 
-        // 3. Vista del reporte — envío del correo
         if ($reserva && $usuario) {
             require_once 'report/email.php';
             $enviado = enviarCorreoReserva($reserva, $usuario);
